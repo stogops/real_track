@@ -1,4 +1,3 @@
-
 import requests
 
 API_URL = "http://real-track-svc.os-stogops-wrk.svc.cluster.local/api"
@@ -27,11 +26,20 @@ def get_locations():
     response.raise_for_status()
     return response.json()
 
-def add_location(name: str, asset_class_id: int, address: str = None):
-    '''Adds a new location.'''
-    payload = {"name": name, "asset_class_id": asset_class_id}
+def add_location(name: str, asset_class_id: int, address: str = None, latitude: float = None, longitude: float = None):
+    '''Adds a new location with optional address and coordinates.'''
+    payload = {
+        "name": name, 
+        "asset_class_id": asset_class_id
+    }
+    
     if address:
         payload["address"] = address
+    if latitude is not None:
+        payload["latitude"] = latitude
+    if longitude is not None:
+        payload["longitude"] = longitude
+
     response = requests.post(f"{API_URL}/locations", json=payload)
     response.raise_for_status()
     return response.json()
