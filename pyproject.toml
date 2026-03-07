@@ -1,0 +1,14 @@
+
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "skillset-real-track"
+version = "0.1.0"
+description = "Skillset for interacting with the Real Track app"
+dependencies = ["requests"]
+
+[tool.setuptools]
+packages = ["skillsets.real_track"]
+package-dir = {"skillsets.real_track" = "."}

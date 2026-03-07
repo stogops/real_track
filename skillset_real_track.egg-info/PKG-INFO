@@ -1,0 +1,5 @@
+Metadata-Version: 2.4
+Name: skillset-real-track
+Version: 0.1.0
+Summary: Skillset for interacting with the Real Track app
+Requires-Dist: requests
