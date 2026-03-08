@@ -21,13 +21,13 @@ def delete_asset_class(id: int):
     return response.json()
 
 def get_locations():
-    '''Returns a list of all locations.'''
+    '''Returns a list of all locations, including their name, address, coordinates, and square footage.'''
     response = requests.get(f"{API_URL}/locations")
     response.raise_for_status()
     return response.json()
 
-def add_location(name: str, asset_class_id: int, address: str = None, latitude: float = None, longitude: float = None):
-    '''Adds a new location with optional address and coordinates.'''
+def add_location(name: str, asset_class_id: int, address: str = None, latitude: float = None, longitude: float = None, square_footage: float = None):
+    '''Adds a new location with optional address, coordinates, and square footage.'''
     payload = {
         "name": name, 
         "asset_class_id": asset_class_id
@@ -39,6 +39,8 @@ def add_location(name: str, asset_class_id: int, address: str = None, latitude: 
         payload["latitude"] = latitude
     if longitude is not None:
         payload["longitude"] = longitude
+    if square_footage is not None:
+        payload["square_footage"] = square_footage
 
     response = requests.post(f"{API_URL}/locations", json=payload)
     response.raise_for_status()
