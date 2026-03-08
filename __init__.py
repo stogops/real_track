@@ -20,17 +20,46 @@ def delete_asset_class(id: int):
     response.raise_for_status()
     return response.json()
 
+def get_counties(asset_class_id=None):
+    '''Returns a list of counties, optionally filtered by asset class ID.'''
+    params = {}
+    if asset_class_id:
+        params["asset_class_id"] = asset_class_id
+    response = requests.get(f"{API_URL}/counties", params=params)
+    response.raise_for_status()
+    return response.json()
+
+def add_county(name: str, asset_class_id: int):
+    '''Creates a new county of interest for a specific asset class.'''
+    payload = {
+        "name": name,
+        "asset_class_id": asset_class_id
+    }
+    response = requests.post(f"{API_URL}/counties", json=payload)
+    response.raise_for_status()
+    return response.json()
+
+def delete_county(id: int):
+    '''Deletes a county of interest.'''
+    response = requests.delete(f"{API_URL}/counties/{id}")
+    response.raise_for_status()
+    return response.json()
+
 def get_locations():
-    '''Returns a list of all locations, including their name, address, coordinates, and square footage.'''
+    '''Returns a list of all locations, including their name, address, coordinates, square footage, lot size, and tax value.'''
     response = requests.get(f"{API_URL}/locations")
     response.raise_for_status()
     return response.json()
 
-def add_location(name: str, asset_class_id: int, address: str = None, latitude: float = None, longitude: float = None, square_footage: float = None):
-    '''Adds a new location with optional address, coordinates, and square footage.'''
+def add_location(name, asset_class_id, county_id=None, address=None, latitude=None, longitude=None, square_footage=0, lot_size=0, tax_value=0):
+    '''Adds a new location with optional county, address, coordinates, square footage, lot size, and tax value.'''
     payload = {
         "name": name, 
-        "asset_class_id": asset_class_id
+        "asset_class_id": asset_class_id,
+        "county_id": county_id,
+        "square_footage": square_footage,
+        "lot_size": lot_size,
+        "tax_value": tax_value
     }
     
     if address:
@@ -39,8 +68,6 @@ def add_location(name: str, asset_class_id: int, address: str = None, latitude: 
         payload["latitude"] = latitude
     if longitude is not None:
         payload["longitude"] = longitude
-    if square_footage is not None:
-        payload["square_footage"] = square_footage
 
     response = requests.post(f"{API_URL}/locations", json=payload)
     response.raise_for_status()
