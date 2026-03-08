@@ -29,10 +29,11 @@ def get_counties(asset_class_id=None):
     response.raise_for_status()
     return response.json()
 
-def add_county(name: str, asset_class_id: int):
+def add_county(county_name: str, state: str, asset_class_id: int):
     '''Creates a new county of interest for a specific asset class.'''
     payload = {
-        "name": name,
+        "county_name": county_name,
+        "state": state,
         "asset_class_id": asset_class_id
     }
     response = requests.post(f"{API_URL}/counties", json=payload)
@@ -54,7 +55,7 @@ def get_locations():
 def add_location(name, asset_class_id, county_id=None, address=None, latitude=None, longitude=None, square_footage=0, lot_size=0, tax_value=0):
     '''Adds a new location with optional county, address, coordinates, square footage, lot size, and tax value.'''
     payload = {
-        "name": name, 
+        "name": name,
         "asset_class_id": asset_class_id,
         "county_id": county_id,
         "square_footage": square_footage,
